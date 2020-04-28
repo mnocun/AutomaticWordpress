@@ -25,7 +25,7 @@ $wordpress = new Wordpress( $configurate, $wordpress_template_location );
 $wordpress->add_database_property( $database );
 $wordpress->write( $wordpress_dir );
 
-if( !move_to_desination( $configurate, $wordpress_name ) )
+if( !move_to_destination( $configurate, $wordpress_dir, $wordpress_name ) )
     exit( "Error! Cannot move to destination location! \n Wordpress directory is avaliable in '$wordpress_file'" );
 
 exit( 'Wordpress installed successfully' );

@@ -36,10 +36,10 @@ function download_wordpress( Configurate $configuration ) : bool {
     return true;
 }
 
-function move_to_desination( Configurate $configuration, string $directory_name ) : bool {
-    if( $configuration === null || !is_array( $configuration->location ) || empty( $directory_name ) ) return false;
-
-    
-
+function move_to_destination( Configurate $configuration, string $wordpress_directory, string $directory_name ) : bool {
+    if( $configuration === null || !is_array( $configuration->location ) || empty( $wordpress_directory ) || empty( $directory_name ) ) return false;
+    if( !isset( $configuration->location[ 'path' ] ) ) return false;
+    $dir_destination = rtrim( $configuration->location[ 'path' ], '/' ).'/'.$directory_name;
+    if( !rename( $wordpress_directory, $dir_destination ) ) return false;
     return true;
 }
