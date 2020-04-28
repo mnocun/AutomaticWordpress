@@ -12,7 +12,7 @@ require __DIR__.'/zone/index.php';
 $wordpress_name = $argv[ 0 ] ?? uniqid( 'wordpress_' );
 $wordpress_template_location = __DIR__.'/source/wp-config-template.txt';
 
-$configurate = new Configurate( __DIR__.'/enviroment.ini' );
+$configurate = new Configurate( __DIR__.'/environment.ini' );
 
 if( !download_wordpress( $configurate ) )
     exit( 'Error! Cannot download wordpress' );
