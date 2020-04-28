@@ -55,7 +55,7 @@ final class Wordpress {
     private function get_ftp_block() : string {
         if( $this->configuration->ftp[ 'include_to_wordpress' ] ?? false ) {
             if( !isset( $this->configuration->ftp[ 'host' ], $this->configuration->ftp[ 'username' ], $this->configuration->ftp[ 'password' ] ) )
-                exit( 'Error! FTP Configuration is not valid' );
+                exit( 'Error! FTP Configuration is not valid\n' );
             $host = $this->configuration->ftp[ 'host' ];
             $username = $this->configuration->ftp[ 'username' ];
             $password = $this->configuration->ftp[ 'password' ];

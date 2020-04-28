@@ -7,11 +7,11 @@ function download_wordpress( Configurate $configuration ) : bool {
     $use = $configuration->wordpress[ 'use' ] ?? 'zip';
     if( $use == 'zip' ) {
         if( !extension_loaded( 'zip' ) )
-            exit( 'Error! Script required extension zip' );
+            exit( 'Error! Script required extension zip\n' );
         $url = $configuration->wordpress[ 'download_zip_url' ] ?? false;
     }else {
         if( !extension_loaded( 'phar' ) )
-            exit( 'Error! Script required extension phar' );
+            exit( 'Error! Script required extension phar\n' );
         $url = $configuration->wordpress[ 'download_tar_url' ] ?? false;
     }
     if( $url === false ) return false;
