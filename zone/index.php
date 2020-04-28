@@ -27,6 +27,7 @@ function download_wordpress( Configurate $configuration ) : bool {
     }else {
         try{
             $compress_file = new PharData( __DIR__.'/'.$file_name );
+            $compress_file->extractTo( __DIR__ );
         }catch( Exception $e ) {
             unlink( __DIR__.'/'.$file_name );
             return false;

@@ -19,7 +19,11 @@ final class Wordpress {
     }
 
     public function write( string $dir_location ) : bool {
-        file_put_contents( $dir_location.'wp-config.php', $this->generate() );
+        try{
+            file_put_contents( $dir_location.'wp-config.php', $this->generate() );
+        }catch( \Exception $e ) {
+            exit( 'Error! '.$e->getMessage() );
+        }
         return false;
     }
 
