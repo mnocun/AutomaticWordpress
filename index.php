@@ -9,7 +9,7 @@ define( 'ABS', __DIR__ );
 require __DIR__.'/source/autoload.php';
 require __DIR__.'/zone/index.php';
 
-$wordpress_name = $argv[ 0 ] ?? uniqid( 'wordpress_' );
+$wordpress_name = $argv[ 1 ] ?? uniqid( 'wordpress_' );
 $wordpress_template_location = __DIR__.'/source/wp-config-template.txt';
 
 $configurate = new Configurate( __DIR__.'/environment.ini' );
