@@ -16,6 +16,7 @@ password = ''
 [ftp]
 ; When you set true option below you must set host,username and password
 include_to_wordpress = true
+direct = true
 host = ""
 username = ""
 password = ""
