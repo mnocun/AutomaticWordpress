@@ -54,7 +54,7 @@ final class Wordpress {
 
     private function get_ftp_block() : string {
         if( $this->configuration->ftp[ 'include_to_wordpress' ] ?? false ) {
-            if( $this->configutation->ftp[ 'direct' ] == true ) {
+            if( ( $this->configuration->ftp[ 'direct' ] ?? false ) == true ) {
                 return "define('FS_METHOD', 'direct');\n";
             }else {
                 if( !isset( $this->configuration->ftp[ 'host' ], $this->configuration->ftp[ 'username' ], $this->configuration->ftp[ 'password' ] ) )
