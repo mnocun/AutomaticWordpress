@@ -58,7 +58,7 @@ final class Wordpress {
                 return "define('FS_METHOD', 'direct');\n";
             }else {
                 if( !isset( $this->configuration->ftp[ 'host' ], $this->configuration->ftp[ 'username' ], $this->configuration->ftp[ 'password' ] ) )
-                    exit( 'Error! FTP Configuration is not valid\n' );
+                    exit( "Error! FTP Configuration is not valid\n" );
                 $host = $this->configuration->ftp[ 'host' ];
                 $username = $this->configuration->ftp[ 'username' ];
                 $password = $this->configuration->ftp[ 'password' ];

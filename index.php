@@ -15,7 +15,7 @@ $wordpress_template_location = __DIR__.'/source/wp-config-template.txt';
 $configurate = new Configurate( __DIR__.'/environment.ini' );
 
 if( !download_wordpress( $configurate ) )
-    exit( 'Error! Cannot download wordpress' );
+    exit( "Error! Cannot download wordpress\n" );
 
 $wordpress_dir = __DIR__.'/zone/wordpress/';
 
@@ -26,6 +26,6 @@ $wordpress->add_database_property( $database );
 $wordpress->write( $wordpress_dir );
 
 if( !move_to_destination( $configurate, $wordpress_dir, $wordpress_name ) )
-    exit( "Error! Cannot move to destination location! \n Wordpress directory is avaliable in '$wordpress_file'" );
+    exit( "Error! Cannot move to destination location! \n Wordpress directory is avaliable in '$wordpress_file'\n" );
 
-exit( 'Wordpress installed successfully' );
+exit( "Wordpress installed successfully\n" );

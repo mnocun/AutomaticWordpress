@@ -8,7 +8,7 @@ final class Database {
     private $current_property = [];
 
     public function __construct( Configurate $configuration, string $name ) {
-        if( !is_array( $configuration->sql ) ) exit( 'Error! Database configurate property does not exist\n' );
+        if( !is_array( $configuration->sql ) ) exit( "Error! Database configurate property does not exist\n" );
         try{
             $this->database_handle = new \PDO(
                 'mysql:host='.( $configuration->sql[ 'host' ] ?? 'localhost' ).';port='.( $configuration->sql[ 'port' ] ?? 3306 ),
@@ -26,7 +26,7 @@ final class Database {
         ];
 
         if( !$this->create_database_structure( $name ) ) 
-            exit( 'Error! Cannot configurate database\n' );
+            exit( "Error! Cannot configurate database\n" );
     }
 
     public function __get( string $property ) {

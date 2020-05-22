@@ -1,10 +1,10 @@
 <?php
 
-defined( 'ABS' ) or die( "This file cannot be used directly" );
+defined( 'ABS' ) or die( "This file cannot be used directly\n" );
 
 ob_start();
 $include_classes = array_diff( scandir( __DIR__.'/class/' ), [ '.', '..' ] );
 foreach( $include_classes as $include_class )
     if( !include( __DIR__.'/class/'.$include_class ) )
-        exit( "Error! Cannot include $include_class" );
+        exit( "Error! Cannot include $include_class\n" );
 ob_clean();
