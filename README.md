@@ -19,4 +19,4 @@ To use the script, please have the php extensions installed :
 * `PDO`
 * `ZIP` or `PHAR`
 
-Use `php index.php "[INSTALLATION FOLDER]"` to execute script
+Use `php index.php [INSTALLATION FOLDER] [?LANG]` to execute script

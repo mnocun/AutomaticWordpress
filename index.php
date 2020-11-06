@@ -10,10 +10,15 @@ require implode(DIRECTORY_SEPARATOR, [ABS, 'autoload.php']);
 try {
     $startExecutionTime = microtime(true);
 
+    if (!isset($argv[0])) {
+        // Called by browser
+        echo '<pre>';
+    }
+
     if (!isset($argv[1])) {
         throw new Exception('The script requires a location');
     }
-    
+
     $installationName = $argv[1];
     $lang = Lang::resolveLang($argv[2]);
 
