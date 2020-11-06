@@ -26,7 +26,7 @@ try {
     $database = new Database($configuration);
     $wordpress = new Wordpress($database, $configuration);
     
-    if (!$wordpress->install($installationName, Lang::EN)) {
+    if (!$wordpress->install($installationName, $lang)) {
         throw new Exception('Cannot install wordpress', 20);
     } else {
         throw new Exception('Wordpress has been installed successfully', 0);
