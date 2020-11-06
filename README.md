@@ -1,31 +1,22 @@
 # AutomaticWordpress
 The script automatically adds wordpress files and configure it
 
-To run the script, configure the environment by editing the `environment.ini` file
-```ini
-[wordpress]
-; Change this if you use another wordpress lang version
-use = 'zip' ; [ 'zip', 'tar' ]
-download_zip_url = "https://pl.wordpress.org/latest-pl_PL.zip"
-download_tar_url = "https://pl.wordpress.org/latest-pl_PL.tar.gz"
-[sql]
-host = 'localhost'
-port = 3306
-username = 'root'
-password = ''
-[ftp]
-; When you set true option below you must set host,username and password
-include_to_wordpress = true
-direct = true
-host = ""
-username = ""
-password = ""
-[location]
-; Set directory where wordpress will be installed
-path = ""
+To run the script, configure the environment by editing the `.env` file
+```
+DB_CHARSET = utf8
+DB_HOST = localhost
+DB_PORT = 3306
+DB_USER = root
+DB_PASSWORD = 
+
+FTP_DIRECT = true
+
+FTP_HOST = 
+FTP_USER =
+FTP_PASSWORD =
 ```
 To use the script, please have the php extensions installed :
 * `PDO`
 * `ZIP` or `PHAR`
 
-Use `php index.php "instalation_name"` to execute script
+Use `php index.php "[INSTALLATION FOLDER]"` to execute script
