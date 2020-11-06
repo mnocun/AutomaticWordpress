@@ -19,8 +19,8 @@ try {
         throw new Exception('The script requires a location');
     }
 
-    $installationName = $argv[1];
-    $lang = Lang::resolveLang($argv[2]);
+    $installationName = trim($argv[1] ?? null, '"\' ');
+    $lang = Lang::resolveLang($argv[2] ?? null);
 
     $configuration = new Configuration(implode(DIRECTORY_SEPARATOR, [ABS, '.env']));
     $database = new Database($configuration);
