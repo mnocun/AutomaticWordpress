@@ -2,6 +2,8 @@
 
 namespace AutomaticWordpress;
 
+use AutomaticWordpress\Installation\Plugins;
+
 use Exception;
 use ZipArchive;
 use PharData;
@@ -20,23 +22,24 @@ class Wordpress
         $this->configuration = $configuration;
     }
 
-    public function install(string $location, string $lang = '') : bool
+    public function install(string $location, Profile $profile) : bool
     {
         $installationType = $this->detectInstallationAbility();
-        $languageCode = Lang::getCode($lang);
+        $languageCode = Lang::getCode($profile->getLang());
         $urlTemplate = 'https://[LANG]wordpress.org/latest[LANG_CODE].[INSTALLATION_TYPE]';
 
-        if (empty($lang)) {
+        if (empty($profile->getLang())) {
             $downloadUrl = str_replace(['[LANG]', '[LANG_CODE]', '[INSTALLATION_TYPE]'], ['', '', $installationType], $urlTemplate);
         } else {
-            $downloadUrl = str_replace(['[LANG]', '[LANG_CODE]', '[INSTALLATION_TYPE]'], [$lang.'.', '-'.$languageCode, $installationType], $urlTemplate);
+            $downloadUrl = str_replace(['[LANG]', '[LANG_CODE]', '[INSTALLATION_TYPE]'], [$profile->getLang().'.', '-'.$languageCode, $installationType], $urlTemplate);
         }
+        Console::centerEcho('Downloading the required files');
         $locationTemp = implode(DIRECTORY_SEPARATOR, [ABS, 'zone', 'latest.'.$installationType]);
         if (!file_put_contents($locationTemp, file_get_contents($downloadUrl))) {
             return false;
         }
 
-        if (!$this->resolveInstallation($installationType, $locationTemp, $lang, $location)) {
+        if (!$this->resolveInstallation($installationType, $locationTemp, $profile, $location)) {
             if (file_exists($locationTemp)) {
                 unlink($locationTemp);
             }
@@ -50,17 +53,37 @@ class Wordpress
         return null;
     }
 
-    protected function configurateInstallation(string $location, string $wordpressFolder, string $lang) : bool
+    protected function postInstallation(string $location, Profile $profile) : bool
+    {
+        $plugins = new Plugins($location, $profile->getPlugins());
+        if (!$plugins->install(implode(DIRECTORY_SEPARATOR, [ABS, 'zone']))) {
+            return false;
+        }
+
+
+
+        return true;
+    }
+
+    protected function configurateInstallation(string $location, string $wordpressFolder, Profile $profile) : bool
     {        
         if (!rename($wordpressFolder, $location)) {
             return false;
         }
 
         $databaseProperty = $this->database->createUserWithDatabase(basename($location));
-        return $this->createConfigurationFile($location, $databaseProperty, $this->getFtpConfiguration());
+        if (!$this->createConfigurationFile($location, $databaseProperty, $this->getFtpConfiguration())) {
+            return false;
+        }
+
+        if (!$this->postInstallation($location, $profile)) {
+            return false;
+        }
+
+        return true;
     }
 
-    protected function installZip(string $archiveLocation, string $lang, string $location) : bool
+    protected function installZip(string $archiveLocation, Profile $profile, string $location) : bool
     {
         $archive = new ZipArchive;
         if (!$archive->open($archiveLocation)) {
@@ -72,10 +95,10 @@ class Wordpress
         }
         unlink($archiveLocation);
         $wordpressLocation = implode(DIRECTORY_SEPARATOR, [dirname($archiveLocation), 'wordpress']);
-        return $this->configurateInstallation($location, $wordpressLocation, $lang);
+        return $this->configurateInstallation($location, $wordpressLocation, $profile);
     }
 
-    protected function installTar(string $archiveLocation, string $lang, string $location) : bool
+    protected function installTar(string $archiveLocation, Profile $profile, string $location) : bool
     {
         try {
             $archive = new PharData($archiveLocation);
@@ -85,16 +108,17 @@ class Wordpress
         }
         unlink($archiveLocation);
         $wordpressLocation = implode(DIRECTORY_SEPARATOR, [dirname($archiveLocation), 'wordpress']);
-        return $this->configurateInstallation($location, $wordpressLocation, $lang);
+        return $this->configurateInstallation($location, $wordpressLocation, $profile);
     }
 
-    protected function resolveInstallation(string $installationType, string $archiveLocation, string $lang, string $location) : bool
+    protected function resolveInstallation(string $installationType, string $archiveLocation, Profile $profile, string $location) : bool
     {
+        Console::centerEcho('Extracting files');
         switch ($installationType) {
             case Wordpress::ZIP:
-                return $this->installZip($archiveLocation, $lang, $location);
+                return $this->installZip($archiveLocation, $profile, $location);
             case Wordpress::TAR:
-                return $this->installTar($archiveLocation, $lang, $location);
+                return $this->installTar($archiveLocation, $profile, $location);
             default:
                 return false;
         }
@@ -113,6 +137,7 @@ class Wordpress
 
     protected function createConfigurationFile(string $location, array $databaseProperty, array $ftpProperty) : bool
     {
+        Console::centerEcho('Generating a configuration file');
         $blocks = [];
         foreach(array_merge($databaseProperty, $ftpProperty) as $name => $property) {
             $blocks[] = "define( '$name', '$property' );";
