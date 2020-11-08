@@ -2,6 +2,8 @@
 
 namespace AutomaticWordpress;
 
+use AutomaticWordpress\Installation\Plugins;
+
 use Exception;
 use ZipArchive;
 use PharData;
@@ -52,13 +54,13 @@ class Wordpress
 
     protected function postInstallation(string $location, Profile $profile) : bool
     {
-        $plugins = $profile->getPlugins();
-        $lang = $profile->getLang();
+        $plugins = new Plugins($location, $profile->getPlugins());
+        if (!$plugins->install(implode(DIRECTORY_SEPARATOR, [ABS, 'zone']))) {
+            return false;
+        }
+
+
         
-
-        var_dump($location, $plugins, $lang);
-
-
         return true;
     }
 
