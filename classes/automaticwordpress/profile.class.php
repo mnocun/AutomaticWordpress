@@ -74,8 +74,12 @@ class Profile
 
     protected function adaptRows(string $rows) : array
     {
-        return array_map(function($value) {
+        $rows = array_map(function($value) {
             return strtolower(trim($value));
         }, explode(',', $rows));
+        
+        return array_filter($rows, function($value) {
+            return !empty($value);
+        });
     }
 }

@@ -13,7 +13,8 @@ try {
     $console = new Console($argv ?? null);
     if (!$console->isConsole()) {
         echo '<pre>';
-        throw new Exception('The script cannot be called by the browser yet', 0);
+        echo 'The script cannot be called by the browser yet';
+        exit;
     }
 
     Console::echo('                         ', [Console::BG_BLACK, Console::COLOR_LIGHT_BLUE], false);
@@ -26,7 +27,7 @@ try {
     Console::echo('                         ', [Console::COLOR_BLACK, Console::BG_LIGHT_BLUE], false);
     Console::echo('', [Console::BG_DEFAULT]);
 
-    Console::echo('      Wordpress installation initialization       ',[Console::TEXT_REVERSE]);
+    Console::centerEcho('Wordpress installation initialization', 50, Console::TEXT_REVERSE);
 
     $profiles = new Profiles(implode(DIRECTORY_SEPARATOR, [ABS, 'profiles.ini']));
     $profile = $profiles->getProfile($console->getFlag('profile'));
@@ -51,7 +52,8 @@ try {
         throw new Exception('Wordpress has been installed successfully', 0);
     }
 } catch (Exception $exception) {
-    Console::centerEcho($exception->getMessage(), 50, Console::TEXT_REVERSE);
-    Console::centerEcho('Total execution time: '.round(microtime(true) - $startExecutionTime, 2).' s', 50, [Console::COLOR_BLACK, Console::BG_LIGHT_BLUE]);
-    Console::echo('', [Console::BG_DEFAULT]);
+    Console::centerEcho($exception->getMessage(), 50, Console::TEXT_REVERSE, false);
+    Console::echo('', Console::TEXT_NORMAL);
+    Console::centerEcho('Total execution time: '.round(microtime(true) - $startExecutionTime, 2).' s', 50, [Console::COLOR_BLACK, Console::BG_LIGHT_BLUE], false);
+    Console::echo('', Console::BG_DEFAULT);
 }

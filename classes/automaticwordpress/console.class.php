@@ -79,7 +79,7 @@ class Console
         if ($endLine) {
             echo PHP_EOL;
         }
-        echo "\e[0m";
+        echo "\e[0;39;49m";
         flush();
     }
 

@@ -18,6 +18,10 @@ class Themes
 
     public function install(string $temporaryLocation) : bool
     {
+        if (empty($this->themes)) {
+            Console::centerEcho('No themes have been defined to install', 50, Console::TEXT_REVERSE);
+            return true;
+        }
         Console::centerEcho('Start installing themes', 50, Console::TEXT_REVERSE);
         if (!is_writable($temporaryLocation) || !extension_loaded('zip')) {
             return false;
@@ -39,7 +43,8 @@ class Themes
                 return false;
             }
         }
-        Console::centerEcho('Themes installation time: '.round(microtime(true) - $startExecutionTime, 2).' s');
+        Console::centerEcho('Themes installation time: '.round(microtime(true) - $startExecutionTime, 2).' s', 50, Console::COLOR_LIGHT_BLUE, false);
+        Console::echo('', Console::BG_DEFAULT);
         return true;
     }
 
