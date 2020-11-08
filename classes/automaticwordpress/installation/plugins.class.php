@@ -18,7 +18,7 @@ class Plugins
 
     public function install(string $temporaryLocation) : bool
     {
-        Console::centerEcho('Start installing plugins');
+        Console::centerEcho('Start installing plugins', 50, Console::TEXT_REVERSE);
         if (!is_writable($temporaryLocation) || !extension_loaded('zip')) {
             return false;
         }

@@ -18,7 +18,7 @@ class Themes
 
     public function install(string $temporaryLocation) : bool
     {
-        Console::centerEcho('Start installing themes');
+        Console::centerEcho('Start installing themes', 50, Console::TEXT_REVERSE);
         if (!is_writable($temporaryLocation) || !extension_loaded('zip')) {
             return false;
         }
