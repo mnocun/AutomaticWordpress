@@ -23,7 +23,7 @@ class Themes
             return false;
         }
         $startExecutionTime = microtime(true);
-        foreach ($this->plugins as $name => $url) {
+        foreach ($this->themes as $name => $url) {
             Console::centerEcho("Installing the \"$name\" theme");
             $archiveLocation = implode(DIRECTORY_SEPARATOR, [$temporaryLocation, "$name.zip"]);
             $archiveContent = @file_get_contents($url);
@@ -34,8 +34,8 @@ class Themes
             if (!file_put_contents($archiveLocation, $archiveContent)) {
                 return false;
             }
-            $pluginsLocation = implode(DIRECTORY_SEPARATOR, [$this->location, 'wp-content', 'themes']);
-            if (!$this->installPlugin($archiveLocation, $pluginsLocation)) {
+            $themesLocation = implode(DIRECTORY_SEPARATOR, [$this->location, 'wp-content', 'themes']);
+            if (!$this->installPlugin($archiveLocation, $themesLocation)) {
                 return false;
             }
         }
