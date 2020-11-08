@@ -35,7 +35,7 @@ class Themes
                 return false;
             }
             $themesLocation = implode(DIRECTORY_SEPARATOR, [$this->location, 'wp-content', 'themes']);
-            if (!$this->installPlugin($archiveLocation, $themesLocation)) {
+            if (!$this->installTheme($archiveLocation, $themesLocation)) {
                 return false;
             }
         }
