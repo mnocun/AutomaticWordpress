@@ -19,6 +19,12 @@ class Console
         }
     }
 
+    public static function echo(string $message) : void
+    {
+        echo $message.PHP_EOL;
+        flush();
+    }
+
     public function hasFlag(string $name) : bool
     {
         $name = strtolower($name);

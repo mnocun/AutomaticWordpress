@@ -2,6 +2,7 @@
 
 namespace AutomaticWordpress\Installation;
 
+use AutomaticWordpress\Console;
 use ZipArchive;
 
 class Plugins
@@ -17,11 +18,13 @@ class Plugins
 
     public function install(string $temporaryLocation) : bool
     {
+        Console::echo('Start installing plugins');
         if (!is_writable($temporaryLocation) || !extension_loaded('zip')) {
             return false;
         }
         $startExecutionTime = microtime(true);
         foreach ($this->plugins as $name => $url) {
+            Console::echo("Installing the \"$name\" plugin");
             $archiveLocation = implode(DIRECTORY_SEPARATOR, [$temporaryLocation, "$name.zip"]);
             if (!file_put_contents($archiveLocation, file_get_contents($url))) {
                 return false;
@@ -31,7 +34,7 @@ class Plugins
                 return false;
             }
         }
-        echo 'Plugins installation time: '.(microtime(true) - $startExecutionTime).' s'.PHP_EOL;
+        Console::echo('Plugins installation time: '.round(microtime(true) - $startExecutionTime, 2).' s');
         return true;
     }
 

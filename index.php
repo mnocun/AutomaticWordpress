@@ -16,6 +16,8 @@ try {
         throw new Exception('The script cannot be called by the browser yet', 0);
     }
 
+    Console::echo('Wordpress installation initialization');
+
     $profiles = new Profiles(implode(DIRECTORY_SEPARATOR, [ABS, 'profiles.ini']));
     $profile = $profiles->getProfile($console->getFlag('profile'));
     if (is_null($profile)) {
@@ -40,5 +42,5 @@ try {
     }
 } catch (Exception $exception) {
     echo $exception->getMessage().PHP_EOL;
-    echo 'Execution time: '.round(microtime(true) - $startExecutionTime, 2).' s'.PHP_EOL;
+    echo 'Total execution time: '.round(microtime(true) - $startExecutionTime, 2).' s'.PHP_EOL;
 }
