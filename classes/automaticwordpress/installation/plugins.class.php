@@ -26,7 +26,12 @@ class Plugins
         foreach ($this->plugins as $name => $url) {
             Console::centerEcho("Installing the \"$name\" plugin");
             $archiveLocation = implode(DIRECTORY_SEPARATOR, [$temporaryLocation, "$name.zip"]);
-            if (!file_put_contents($archiveLocation, file_get_contents($url))) {
+            $archiveContent = @file_get_contents($url);
+            if ($archiveContent === false) {
+                Console::centerEcho("Could not find plugin \"$name\"", 50, Console::COLOR_RED);
+                continue;
+            }
+            if (!file_put_contents($archiveLocation, $archiveContent)) {
                 return false;
             }
             $pluginsLocation = implode(DIRECTORY_SEPARATOR, [$this->location, 'wp-content', 'plugins']);
