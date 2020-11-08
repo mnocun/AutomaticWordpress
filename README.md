@@ -15,8 +15,25 @@ FTP_HOST =
 FTP_USER =
 FTP_PASSWORD =
 ```
-To use the script, please have the php extensions installed :
+
+Configure wordpress profiles optionally in `profiles.ini`
+```ini
+[profile1]
+lang = ES
+plugins = "woocommerce, bbpress"
+[profile2]
+lang = RU
+plugins = "classic-editor"
+[profile3]
+lang = EN
+```
+
+To use the script, please have the php extensions installed:
 * `PDO`
 * `ZIP` or `PHAR`
 
-Use `php index.php [INSTALLATION FOLDER] [?LANG]` to execute script
+Flags you can use:
+* `--lang` Select the language of wordpress in iso format, e.g. EN, ES, PL
+* `--profile` Select the wordpress profile defined in profiles.ini
+
+Use `php index.php [INSTALLATION FOLDER] [FLAGS]` to execute script
