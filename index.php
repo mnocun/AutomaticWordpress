@@ -16,7 +16,17 @@ try {
         throw new Exception('The script cannot be called by the browser yet', 0);
     }
 
-    Console::echo('Wordpress installation initialization');
+    Console::echo('                         ', [Console::BG_BLACK, Console::COLOR_LIGHT_BLUE], false);
+    Console::echo('                         ', [Console::COLOR_BLACK, Console::BG_LIGHT_BLUE], false);
+    Console::echo('', [Console::BG_DEFAULT]);
+    Console::echo('               Automatic ', [Console::BG_BLACK, Console::COLOR_LIGHT_BLUE], false);
+    Console::echo(' Wordpress               ', [Console::COLOR_BLACK, Console::BG_LIGHT_BLUE], false);
+    Console::echo('', [Console::BG_DEFAULT]);
+    Console::echo('                         ', [Console::BG_BLACK, Console::COLOR_LIGHT_BLUE], false);
+    Console::echo('                         ', [Console::COLOR_BLACK, Console::BG_LIGHT_BLUE], false);
+    Console::echo('', [Console::BG_DEFAULT]);
+
+    Console::echo('      Wordpress installation initialization       ',[Console::TEXT_REVERSE]);
 
     $profiles = new Profiles(implode(DIRECTORY_SEPARATOR, [ABS, 'profiles.ini']));
     $profile = $profiles->getProfile($console->getFlag('profile'));
@@ -41,6 +51,7 @@ try {
         throw new Exception('Wordpress has been installed successfully', 0);
     }
 } catch (Exception $exception) {
-    echo $exception->getMessage().PHP_EOL;
-    echo 'Total execution time: '.round(microtime(true) - $startExecutionTime, 2).' s'.PHP_EOL;
+    Console::centerEcho($exception->getMessage(), 50, Console::TEXT_REVERSE);
+    Console::centerEcho('Total execution time: '.round(microtime(true) - $startExecutionTime, 2).' s', 50, [Console::COLOR_BLACK, Console::BG_LIGHT_BLUE]);
+    Console::echo('', [Console::BG_DEFAULT]);
 }

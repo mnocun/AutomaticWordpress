@@ -33,7 +33,7 @@ class Wordpress
         } else {
             $downloadUrl = str_replace(['[LANG]', '[LANG_CODE]', '[INSTALLATION_TYPE]'], [$profile->getLang().'.', '-'.$languageCode, $installationType], $urlTemplate);
         }
-        Console::echo('Downloading the required files');
+        Console::centerEcho('Downloading the required files');
         $locationTemp = implode(DIRECTORY_SEPARATOR, [ABS, 'zone', 'latest.'.$installationType]);
         if (!file_put_contents($locationTemp, file_get_contents($downloadUrl))) {
             return false;
@@ -113,7 +113,7 @@ class Wordpress
 
     protected function resolveInstallation(string $installationType, string $archiveLocation, Profile $profile, string $location) : bool
     {
-        Console::echo('Extracting files');
+        Console::centerEcho('Extracting files');
         switch ($installationType) {
             case Wordpress::ZIP:
                 return $this->installZip($archiveLocation, $profile, $location);
@@ -137,7 +137,7 @@ class Wordpress
 
     protected function createConfigurationFile(string $location, array $databaseProperty, array $ftpProperty) : bool
     {
-        Console::echo('Generating a configuration file');
+        Console::centerEcho('Generating a configuration file');
         $blocks = [];
         foreach(array_merge($databaseProperty, $ftpProperty) as $name => $property) {
             $blocks[] = "define( '$name', '$property' );";
