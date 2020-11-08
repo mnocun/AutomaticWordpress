@@ -5,50 +5,50 @@ namespace AutomaticWordpress\Installation;
 use AutomaticWordpress\Console;
 use ZipArchive;
 
-class Plugins
+class Themes
 {
     protected $location;
-    protected $plugins;
+    protected $themes;
 
-    public function __construct(string $location, array $plugins)
+    public function __construct(string $location, array $themes)
     {
         $this->location = $location;
-        $this->plugins = $plugins;
+        $this->themes = $themes;
     }
 
     public function install(string $temporaryLocation) : bool
     {
-        if (empty($this->plugins)) {
-            Console::centerEcho('No plugins have been defined to install', 50, Console::TEXT_REVERSE);
+        if (empty($this->themes)) {
+            Console::centerEcho('No themes have been defined to install', 50, Console::TEXT_REVERSE);
             return true;
         }
-        Console::centerEcho('Start installing plugins', 50, Console::TEXT_REVERSE);
+        Console::centerEcho('Start installing themes', 50, Console::TEXT_REVERSE);
         if (!is_writable($temporaryLocation) || !extension_loaded('zip')) {
             return false;
         }
         $startExecutionTime = microtime(true);
-        foreach ($this->plugins as $name => $url) {
-            Console::centerEcho("Installing the \"$name\" plugin");
+        foreach ($this->themes as $name => $url) {
+            Console::centerEcho("Installing the \"$name\" theme");
             $archiveLocation = implode(DIRECTORY_SEPARATOR, [$temporaryLocation, "$name.zip"]);
             $archiveContent = @file_get_contents($url);
             if ($archiveContent === false) {
-                Console::centerEcho("Could not find plugin \"$name\"", 50, Console::COLOR_RED);
+                Console::centerEcho("Could not find theme \"$name\"", 50, Console::COLOR_RED);
                 continue;
             }
             if (!file_put_contents($archiveLocation, $archiveContent)) {
                 return false;
             }
-            $pluginsLocation = implode(DIRECTORY_SEPARATOR, [$this->location, 'wp-content', 'plugins']);
-            if (!$this->installPlugin($archiveLocation, $pluginsLocation)) {
+            $themesLocation = implode(DIRECTORY_SEPARATOR, [$this->location, 'wp-content', 'themes']);
+            if (!$this->installTheme($archiveLocation, $themesLocation)) {
                 return false;
             }
         }
-        Console::centerEcho('Plugins installation time: '.round(microtime(true) - $startExecutionTime, 2).' s', 50, Console::COLOR_LIGHT_BLUE, false);
+        Console::centerEcho('Themes installation time: '.round(microtime(true) - $startExecutionTime, 2).' s', 50, Console::COLOR_LIGHT_BLUE, false);
         Console::echo('', Console::BG_DEFAULT);
         return true;
     }
 
-    protected function installPlugin(string $archiveLocation, string $location) : bool
+    protected function installTheme(string $archiveLocation, string $location) : bool
     {
         $archive = new ZipArchive;
         if (!$archive->open($archiveLocation)) {
@@ -62,5 +62,4 @@ class Plugins
         unlink($archiveLocation);
         return true;
     }
-
 }

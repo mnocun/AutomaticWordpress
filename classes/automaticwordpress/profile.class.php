@@ -9,12 +9,14 @@ class Profile
     public $name;
     public $lang;
     public $plugins;
+    public $themes;
 
     public function __construct(string $name, array $profile)
     {
         $this->setName($name);
         $this->setLang($profile['lang'] ?? '');
         $this->setPlugins($profile['plugins'] ?? '');
+        $this->setThemes($profile['themes'] ?? '');
     }
 
     public function setName(string $name) : void
@@ -29,7 +31,12 @@ class Profile
 
     public function setPlugins(string $plugins) : void
     {
-        $this->plugins = array_map('trim', explode(',', $plugins) );
+        $this->plugins = $this->adaptRows($plugins);
+    }
+
+    public function setThemes(string $themes) : void
+    {
+        $this->themes = $this->adaptRows($themes);
     }
 
     public function getName() : string
@@ -45,14 +52,34 @@ class Profile
     public function getPlugins() : array
     {
         $plugins = [];
-        foreach($this->plugins as $plugin) {
+        foreach ($this->plugins as $plugin) {
             $plugins[$plugin] = "https://downloads.wordpress.org/plugin/$plugin.zip";
         }
         return $plugins;
     }
 
+    public function getThemes() : array
+    {
+        $themes = [];
+        foreach ($this->themes as $theme) {
+            $themes[$theme] = "https://downloads.wordpress.org/theme/$theme.zip";
+        }
+        return $themes;
+    }
+
     public static function createEmpty() : self
     {
         return new self('default', ['lang' => '', 'plugins' => '']);
+    }
+
+    protected function adaptRows(string $rows) : array
+    {
+        $rows = array_map(function($value) {
+            return strtolower(trim($value));
+        }, explode(',', $rows));
+        
+        return array_filter($rows, function($value) {
+            return !empty($value);
+        });
     }
 }

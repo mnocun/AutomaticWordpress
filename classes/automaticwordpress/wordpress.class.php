@@ -2,6 +2,7 @@
 
 namespace AutomaticWordpress;
 
+use AutomaticWordpress\Installation\Themes;
 use AutomaticWordpress\Installation\Plugins;
 
 use Exception;
@@ -55,8 +56,15 @@ class Wordpress
 
     protected function postInstallation(string $location, Profile $profile) : bool
     {
+        $temporaryLocation = implode(DIRECTORY_SEPARATOR, [ABS, 'zone']);
+
+        $themes = new Themes($location, $profile->getThemes());
+        if (!$themes->install($temporaryLocation)) {
+            return false;
+        }
+
         $plugins = new Plugins($location, $profile->getPlugins());
-        if (!$plugins->install(implode(DIRECTORY_SEPARATOR, [ABS, 'zone']))) {
+        if (!$plugins->install($temporaryLocation)) {
             return false;
         }
 

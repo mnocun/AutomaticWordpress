@@ -21,11 +21,13 @@ Configure wordpress profiles optionally in `profiles.ini`
 [profile1]
 lang = ES
 plugins = "woocommerce, bbpress"
+themes = "popularfx"
 [profile2]
 lang = RU
 plugins = "classic-editor"
 [profile3]
 lang = EN
+themes = "generatepress, hello-elementor"
 ```
 
 To use the script, please have the php extensions installed:
